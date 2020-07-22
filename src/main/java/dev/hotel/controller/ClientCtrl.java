@@ -43,6 +43,18 @@ public class ClientCtrl {
 	}
 
 	// GET /clients/UUID
-
+	@GetMapping("/{uuid}")
+	public ResponseEntity<?> FindByUUID(@PathVariable UUID uuid) {
+		if (uuid == null) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Valorisez un UUID.");
+		} else {
+			Optional<Client> client = clientRepository.findById(uuid);
+			if (!client.isPresent()) {
+				return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Client non trouvé.");
+			} else {
+				return ResponseEntity.status(HttpStatus.OK).body(client);
+			}
+		}
+	}
 
 }
